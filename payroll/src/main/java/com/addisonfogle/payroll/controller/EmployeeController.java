@@ -35,18 +35,15 @@ public class EmployeeController {
         this.assembler = assembler;
     }
 
-    // Aggregate root
-    // tag::get-aggregate-root[]
     @GetMapping("/employees")
     public CollectionModel<EntityModel<Employee>> all() {
 
-        List<EntityModel<Employee>> employees = repository.findAll().stream() //
-                .map(assembler::toModel) //
+        List<EntityModel<Employee>> employees = repository.findAll().stream()
+                .map(assembler::toModel)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(employees, linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
     }
-    // end::get-aggregate-root[]
 
     @PostMapping("/employees")
     ResponseEntity<?> newEmployee(@RequestBody Employee newEmployee) {
